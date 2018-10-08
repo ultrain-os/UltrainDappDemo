@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>leaderboard</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="./javascripts/u3.js"></script>
+    <script>
+
+        let u3 = U3.createU3({
+            httpEndpoint: 'http://127.0.0.1:8888',
+            httpEndpoint_history: 'http://127.0.0.1:3000',
+            broadcast: true,
+            debug: false,
+            sign: true,
+            logger: {
+                log: console.log,
+                error: console.error,
+                debug: console.log
+            },
+            chainId:'2616bfbc21e11d60d10cb798f00893c2befba10e2338b7277bb3865d2e658f58',
+            symbol: 'UGAS'
+        });
+
+        function wait(ms = 0) {
+            return new Promise(res => setTimeout(res, ms));
+        }
+
+        async function getLeaderboard() {
+
+            let owner_account = 'ben';
+
+            const tr = await u3.contract(owner_account);
+
+            const result = await u3.getAllTxs(1,10000000,{"actions.name":"exchangeScore"},{_id:-1});
+            //console.log(result);
+            let content = '';
+            for ( let i = 0 ;i< result.results.length;i++){
+                content = content + '<tr><td>'+ result.results[i].actions[0].data.from+":"+result.results[i].actions[0].data.quantity
+                    +'</td></tr>';
+            }
+
+            document.getElementById("leaderboard").innerHTML = content;
+        }
+
+        getLeaderboard();
+    </script>
+</head>
+
+<body>
+
+<div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+    <h1>leaderboard</h1>
+
+    <table id="leaderboard">
+
+
+    </table>
+</div>
+
+</body>
+
+</html>

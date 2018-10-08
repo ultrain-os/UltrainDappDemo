@@ -1,0 +1,99 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>mining</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="./javascripts/u3.js"></script>
+    <script>
+
+        let u3_bob = U3.createU3({
+            httpEndpoint: 'http://127.0.0.1:8888',
+            httpEndpoint_history: 'http://127.0.0.1:3000',
+            broadcast: true,
+            debug: false,
+            sign: true,
+            logger: {
+                log: console.log,
+                error: console.error,
+                debug: console.log
+            },
+            chainId:'2616bfbc21e11d60d10cb798f00893c2befba10e2338b7277bb3865d2e658f58',
+            keyProvider: '5JoQtsKQuH8hC9MyvfJAqo6qmKLm8ePYNucs7tPu2YxG12trzBt',//bob's private_key
+            symbol: 'CARB'
+        });
+
+        let u3_tom = U3.createU3({
+            httpEndpoint: 'http://127.0.0.1:8888',
+            httpEndpoint_history: 'http://127.0.0.1:3000',
+            broadcast: true,
+            debug: false,
+            sign: true,
+            logger: {
+                log: console.log,
+                error: console.error,
+                debug: console.log
+            },
+            chainId:'2616bfbc21e11d60d10cb798f00893c2befba10e2338b7277bb3865d2e658f58',
+            keyProvider: '5KXYYEWSFRWfNVrMPaVcxiRTjD9PzHjBSzxhA9MeQKHPMxWP8kU',//tom's private_key
+            symbol: 'CARB'
+        });
+
+        function wait(ms = 0) {
+            return new Promise(res => setTimeout(res, ms));
+        }
+
+        function randomFrom(lowerValue,upperValue)
+        {
+            return Math.floor(Math.random() * (upperValue - lowerValue + 1) + lowerValue);
+        }
+
+        async function mining() {
+
+            let owner_account = 'ben';
+
+            const tr_bob = await u3_bob.contract(owner_account);
+            const tr_tom = await u3_tom.contract(owner_account);
+
+            // let amount = U3.format.UDecimalPad(2000,4);
+            let heat_bob = randomFrom(15000,20000);
+            let heat_tom = randomFrom(15000,20000);
+            await tr_bob.recordHeat(heat_bob,{ authorization: [`bob@active`] });
+            await tr_tom.recordHeat(heat_tom,{ authorization: [`tom@active`] });
+
+            var d=new Date();
+            var t=d.toLocaleTimeString();
+
+            document.getElementById("bob_log").innerHTML = 'time :'+t+', heat value ：'+ heat_bob;
+
+            document.getElementById("tom_log").innerHTML = 'time :'+t+', heat value ：'+ heat_tom;
+        }
+
+        mining();
+        var int=self.setInterval("mining()",30*1000);
+    </script>
+</head>
+
+<body>
+
+<div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+    <h1>Green facilities A</h1>
+    <p>account：bob</p>
+    <p>description：Green facilities that produces CarbonCoin through green energy.</p>
+    <p id="bob_log"></p>
+</div>
+
+<div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+    <h1>Green facilities B</h1>
+    <p>account：tom</p>
+    <p>description：Green facilities that produces CarbonCoin through green energy.</p>
+    <p id="tom_log"></p>
+</div>
+
+<div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+    <button onclick="int=window.clearInterval(int)">stop</button>
+</div>
+
+</body>
+
+</html>

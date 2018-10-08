@@ -1,0 +1,298 @@
+{
+  "version": "ultraio:1.0",
+  "types": [
+    {
+      "new_type_name": "u64",
+      "type": "uint64"
+    },
+    {
+      "new_type_name": "account_name",
+      "type": "name"
+    },
+    {
+      "new_type_name": "Asset",
+      "type": "asset"
+    },
+    {
+      "new_type_name": "symbol_name",
+      "type": "uint64"
+    }
+  ],
+  "structs": [
+    {
+      "fields": [
+        {
+          "name": "quantity",
+          "type": "u64"
+        }
+      ],
+      "name": "recordHeat",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "from",
+          "type": "account_name"
+        },
+        {
+          "name": "to",
+          "type": "account_name"
+        },
+        {
+          "name": "quantity",
+          "type": "Asset"
+        },
+        {
+          "name": "memo",
+          "type": "string"
+        }
+      ],
+      "name": "exchangeScore",
+      "base": ""
+    },
+    {
+      "fields": [],
+      "name": "getScores",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "from",
+          "type": "account_name"
+        },
+        {
+          "name": "to",
+          "type": "account_name"
+        },
+        {
+          "name": "quantity",
+          "type": "Asset"
+        },
+        {
+          "name": "memo",
+          "type": "string"
+        }
+      ],
+      "name": "exchangeCarbonCoin",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "issuer",
+          "type": "account_name"
+        },
+        {
+          "name": "maximum_supply",
+          "type": "Asset"
+        }
+      ],
+      "name": "create",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "to",
+          "type": "account_name"
+        },
+        {
+          "name": "quantity",
+          "type": "Asset"
+        },
+        {
+          "name": "memo",
+          "type": "string"
+        }
+      ],
+      "name": "issue",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "from",
+          "type": "account_name"
+        },
+        {
+          "name": "to",
+          "type": "account_name"
+        },
+        {
+          "name": "quantity",
+          "type": "Asset"
+        },
+        {
+          "name": "memo",
+          "type": "string"
+        }
+      ],
+      "name": "transfer",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "owner",
+          "type": "account_name"
+        },
+        {
+          "name": "symname",
+          "type": "symbol_name"
+        }
+      ],
+      "name": "getBalance",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "score",
+          "type": "u64"
+        }
+      ],
+      "name": "ScoreRecord",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "miner",
+          "type": "string"
+        },
+        {
+          "name": "timestamp",
+          "type": "u64"
+        },
+        {
+          "name": "heatValue",
+          "type": "u64"
+        }
+      ],
+      "name": "HeatRecord",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "supply",
+          "type": "Asset"
+        },
+        {
+          "name": "max_supply",
+          "type": "Asset"
+        },
+        {
+          "name": "issuer",
+          "type": "account_name"
+        }
+      ],
+      "name": "CurrencyStats",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
+          "name": "balance",
+          "type": "Asset"
+        }
+      ],
+      "name": "CurrencyAccount",
+      "base": ""
+    }
+  ],
+  "actions": [
+    {
+      "ricardian_contract": "",
+      "name": "recordHeat",
+      "type": "recordHeat"
+    },
+    {
+      "ricardian_contract": "",
+      "name": "exchangeScore",
+      "type": "exchangeScore"
+    },
+    {
+      "ricardian_contract": "",
+      "name": "getScores",
+      "type": "getScores"
+    },
+    {
+      "ricardian_contract": "",
+      "name": "exchangeCarbonCoin",
+      "type": "exchangeCarbonCoin"
+    },
+    {
+      "ricardian_contract": "",
+      "name": "create",
+      "type": "create"
+    },
+    {
+      "ricardian_contract": "",
+      "name": "issue",
+      "type": "issue"
+    },
+    {
+      "ricardian_contract": "",
+      "name": "transfer",
+      "type": "transfer"
+    },
+    {
+      "ricardian_contract": "",
+      "name": "getBalance",
+      "type": "getBalance"
+    }
+  ],
+  "tables": [
+    {
+      "index_type": "i64",
+      "keys_names": [
+        "currency"
+      ],
+      "keys_types": [
+        "uint64"
+      ],
+      "name": "score",
+      "type": "ScoreRecord"
+    },
+    {
+      "index_type": "i64",
+      "keys_names": [
+        "currency"
+      ],
+      "keys_types": [
+        "uint64"
+      ],
+      "name": "heatvalue",
+      "type": "HeatRecord"
+    },
+    {
+      "index_type": "i64",
+      "keys_names": [
+        "currency"
+      ],
+      "keys_types": [
+        "uint64"
+      ],
+      "name": "stat",
+      "type": "CurrencyStats"
+    },
+    {
+      "index_type": "i64",
+      "keys_names": [
+        "currency"
+      ],
+      "keys_types": [
+        "uint64"
+      ],
+      "name": "accounts",
+      "type": "CurrencyAccount"
+    }
+  ]
+}

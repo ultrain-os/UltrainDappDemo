@@ -1,0 +1,234 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>balance</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+  <script src="./javascripts/u3.js"></script>
+  <script>
+
+      let u3 = U3.createU3({
+          httpEndpoint: 'http://127.0.0.1:8888',
+          httpEndpoint_history: 'http://127.0.0.1:3000',
+          broadcast: true,
+          debug: false,
+          sign: true,
+          logger: {
+              log: console.log,
+              error: console.error,
+              debug: console.log
+          },
+          chainId:'2616bfbc21e11d60d10cb798f00893c2befba10e2338b7277bb3865d2e658f58',
+          symbol: 'UGAS'
+      });
+
+      let u3_bob = U3.createU3({
+          keyProvider:'5JoQtsKQuH8hC9MyvfJAqo6qmKLm8ePYNucs7tPu2YxG12trzBt',//bob's private key
+      })
+
+      let u3_tom = U3.createU3({
+          keyProvider:'5KXYYEWSFRWfNVrMPaVcxiRTjD9PzHjBSzxhA9MeQKHPMxWP8kU',//tom's private key
+      })
+
+      let u3_tony = U3.createU3({
+          keyProvider:'5KbHvFfDXovPvo2ACNd23yAE9kJF7Mxaws7srp6VapjMr7TrHZB',//tony's private key
+      })
+
+      let u3_jerry = U3.createU3({
+          keyProvider:'5JFz7EbcsCNHrDLuf9VpHtnLdepL4CcAEXu7AtSUYfcoiszursr',//jerry's private key
+      })
+
+      async function getBalanceInfo() {
+          let SYMBOL = 'CARB';
+          let account = 'ben';
+
+          const ben_balance = await u3.getCurrencyBalance({
+              code:'ben',
+              symbol: SYMBOL,
+              account: account
+          });
+
+          document.getElementById("carbon_balance").innerHTML = 'account balance：'+ben_balance;
+
+          const bob_balance = await u3.getCurrencyBalance({
+              code:'ben',
+              symbol: SYMBOL,
+              account: 'bob'
+          });
+
+          document.getElementById("bob_balance").innerHTML = 'account balance：'+ bob_balance;
+
+          const tom_balance = await u3.getCurrencyBalance({
+              code:'ben',
+              symbol: SYMBOL,
+              account: 'tom'
+          });
+
+          document.getElementById("tom_balance").innerHTML = 'account balance：'+tom_balance;
+
+          const tony_balance = await u3.getCurrencyBalance({
+              code:'ben',
+              symbol: SYMBOL,
+              account: 'tony'
+          });
+
+          document.getElementById("tony_balance").innerHTML = 'account balance：'+tony_balance;
+
+          const jerry_balance = await u3.getCurrencyBalance({
+              code:'ben',
+              symbol: SYMBOL,
+              account: 'jerry'
+          });
+
+          document.getElementById("jerry_balance").innerHTML = 'account balance：'+jerry_balance;
+
+          const jack_balance = await u3.getCurrencyBalance({
+              code:'ben',
+              symbol: SYMBOL,
+              account: 'jack'
+          });
+
+          document.getElementById("jack_balance").innerHTML = 'account balance：'+jack_balance;
+      }
+
+      getBalanceInfo();
+
+      function randomFrom(lowerValue,upperValue)
+      {
+          return Math.floor(Math.random() * (upperValue - lowerValue + 1) + lowerValue);
+      }
+
+      function wait(ms = 0) {
+          return new Promise(res => setTimeout(res, ms));
+      }
+
+      async function sendCoin(from,to){
+
+          let SYMBOL = 'CARB';
+          let code = 'ben';
+
+          let coins = U3.format.DecimalPad(this.randomFrom(100,500),4);
+
+          if (from == 'bob'){
+              const tr = await u3_bob.contract(code);
+              const result = await tr.transfer(from, to, coins + ' ' + SYMBOL, 'sendCoin', { authorization: [`bob@active`] });
+
+              let tx = await u3_bob.getTxByTxId(result.transaction_id);
+              while (!tx.irreversible) {
+                  await wait(1000);
+                  tx = await u3_bob.getTxByTxId(result.transaction_id);
+                  if (tx.irreversible) {
+                      alert("bob send coin success:"+ coins);
+                      break;
+                  }
+              }
+          } else if (from == 'tom'){
+              const tr = await u3_tom.contract(code);
+              const result = await tr.transfer(from, to, coins + ' ' + SYMBOL, 'sendCoin', { authorization: [`tom@active`] });
+
+              let tx = await u3_tom.getTxByTxId(result.transaction_id);
+              while (!tx.irreversible) {
+                  await wait(1000);
+                  tx = await u3_tom.getTxByTxId(result.transaction_id);
+                  if (tx.irreversible) {
+                      alert("tom send coin success:"+ coins);
+                      break;
+                  }
+              }
+          }
+      }
+
+      async function exchangeScore(account){
+          let SYMBOL = 'CARB';
+          let code = 'ben';
+          let to = 'jack';
+
+          let coins = U3.format.DecimalPad(this.randomFrom(10,50),4);
+
+          if (account == 'tony'){
+              const tr = await u3_tony.contract(code);
+              const result = await tr.exchangeScore(account, to, coins + ' ' + SYMBOL, 'sendCoin', { authorization: [`tony@active`] });
+
+              let tx = await u3_tony.getTxByTxId(result.transaction_id);
+              while (!tx.irreversible) {
+                  await wait(1000);
+                  tx = await u3_tony.getTxByTxId(result.transaction_id);
+                  if (tx.irreversible) {
+                      alert("tony buy score success:"+ coins);
+                      break;
+                  }
+              }
+          } else if (account == 'jerry'){
+              const tr = await u3_jerry.contract(code);
+              const result = await tr.exchangeScore(account, to, coins + ' ' + SYMBOL, 'sendCoin', { authorization: [`jerry@active`] });
+
+              let tx = await u3_jerry.getTxByTxId(result.transaction_id);
+              while (!tx.irreversible) {
+                  await wait(1000);
+                  tx = await u3_jerry.getTxByTxId(result.transaction_id);
+                  if (tx.irreversible) {
+                      alert("jerry buy score success:"+ coins);
+                      break;
+                  }
+              }
+          }
+      }
+
+  </script>
+</head>
+
+<body>
+
+    <div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+        <h1>CarbonCoin issuer</h1>
+        <p>account：ben</p>
+        <p>description：this account issued CarbonCoin and holds all carboncoins that not been distributed.</p>
+        <p id="carbon_balance"></p>
+
+    </div>
+
+    <div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+        <h1>Green facilities A</h1>
+        <p>account：bob</p>
+        <p>description：Green facilities that produces CarbonCoin through green energy.</p>
+        <p id="bob_balance"></p>
+        <p><a href="#" OnClick="sendCoin('bob','tony')">Transfer carboncoin to airline C</a></p>
+    </div>
+
+    <div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+        <h1>Green facilities B</h1>
+        <p>account：tom</p>
+        <p>description：Green facilities that produces CarbonCoin through green energy.</p>
+        <p id="tom_balance"></p>
+        <p><a href="#" OnClick="sendCoin('tom','jerry')">Transfer carboncoin to automobile manufacturer</a></p>
+    </div>
+
+    <div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+        <h1>Airline C</h1>
+        <p>account：tony</p>
+        <p>description：huge airline company that use a lot of fossil energy.</p>
+        <p id="tony_balance"></p>
+        <p><a href="#" OnClick="exchangeScore('tony');return false;">Buy charity point</a></p>
+
+    </div>
+
+    <div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+        <h1>Automobile manufacturer D</h1>
+        <p>account：jerry</p>
+        <p>description：huge automobile manufacturer that use a lot of fossil energy.</p>
+        <p id="jerry_balance"></p>
+        <p><a href="#" OnClick="exchangeScore('jerry');return false;">Buy charity point</a></p>
+
+    </div>
+
+    <div style="padding:8px;border:1px solid #96c2f1;background:#eff7ff">
+        <h1>CarbonCoin buring account</h1>
+        <p>account：jack</p>
+        <p>description：this account holds all carboncoins which were been burned.</p>
+        <p id="jack_balance"></p>
+
+    </div>
+
+</body>
+
+</html>
