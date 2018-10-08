@@ -2,7 +2,7 @@
  * @author rayguo@ultrain.io
  */
 import { Contract } from 'ultrain-ts-lib/src/contract';
-import { Asset } from 'ultrain-ts-lib/src/asset';
+import { Asset, StringToSymbol } from 'ultrain-ts-lib/src/asset';
 import { ultrain_assert,intToString } from 'ultrain-ts-lib/src/utils';
 import { DBManager } from 'ultrain-ts-lib/src/dbmanager';
 import { TransferParams, dispatchInline,Action } from 'ultrain-ts-lib/src/action';
@@ -32,12 +32,12 @@ class HeatRecord implements Serializable {
 
 class ScoreRecord implements Serializable {
 
-    name: string;
+    name: account_name;
     score:u64;
 
-    primaryKey(): u64 {return NAME(this.name)};
+    primaryKey(): u64 {return this.name; };
     prints():void{
-        Log.s("name = ").s(this.name).s(",score = ").i(this.score);
+        Log.s("name = ").s(RNAME(this.name)).s(",score = ").i(this.score);
     }
 
 }
@@ -70,9 +70,9 @@ export class energy extends Contract {
 
     constructor(code: u64) {
         super(code);
-        this._receiver = code;
+        // this._receiver = code;
 
-        this.onInit();
+        // this.onInit();
     }
 
     @action
@@ -91,11 +91,11 @@ export class energy extends Contract {
 
         let value = intToString(r.heatValue)+","+r.miner;
         emit("onHeatInvoked", EventObject.setString("heat",value));
-
     }
 
     @action
-    public exchangeScore(from: account_name,to : account_name, quantity: Asset,memo:string): void {
+    public exchangeScore(from: account_name, quantity: Asset,memo:string): void {
+        Action.requireAuth(from);
 
         let s = new ScoreRecord();
 
@@ -104,38 +104,35 @@ export class energy extends Contract {
             this.db_s.get(from,s);
             s.score = s.score + quantity.amount;
             this.db_s.modify(this.receiver,s);
-            Log.s("thi is a edit obj");
+            Log.s("thi is a edit obj").flush();
         }else{
             s.score = quantity.amount;
-            s.name = RNAME(from);
+            s.name = from;
             this.db_s.emplace(this.receiver, s);
-            Log.s("thi is a new obj");
+            Log.s("thi is a new obj").flush();
         }
 
-        //let burningAccount = ACCOUNT("jack");
-        //this.transfer(from,burningAccount.code,quantity,memo);
-        this.transfer(from,to,quantity,memo);
+        // transfer to account 'jack' to destroy
+        this.transfer(from,NAME("jack"),quantity,memo);
 
     }
 
     @action
-    public getScores():void{
-        //ReturnArray<u8>([1,2,3]);
-        let tony_score = new ScoreRecord();
-        let jerry_score = new ScoreRecord();
-        this.db_s.get(NAME('tony'),tony_score);
-        this.db_s.get(NAME('jerry'),jerry_score);
-        //ReturnArray<string>(['tony:'+intToString(tony_score.score),'jerry:'+intToString(tony_score.score)]);
-        Return("test ok");
+    public getScores(who: account_name):void{
+        if (this.db_s.exists(who)) {
+          let score = new ScoreRecord();
+          this.db_s.get(who, score);
+          Return<u64>(score.score);
+        } else {
+          Return<u64>(0);
+        }
 
     }
 
     @action
     public exchangeCarbonCoin(from: account_name, to: account_name, quantity: Asset,memo:string): void {
-        //let managerAccount = ACCOUNT("ben");
 
         let carbonToken:Asset = quantity.divide(10);
-        //this.transfer(managerAccount.code ,to,carbonToken,memo);
         this.transfer(from ,to,carbonToken,memo);
     }
 
@@ -251,20 +248,25 @@ export class energy extends Contract {
     }
   }
 
-  public getSupply(symname: symbol_name): Asset {
+  @action
+  public getSupply(symnamestr: string): Asset {
+    let symname = (StringToSymbol(4, symnamestr) >> 8)
     let statstable: DBManager<CurrencyStats> = new DBManager<CurrencyStats>(NAME(STATSTABLE), this.receiver, symname);
     let st = new CurrencyStats(new Asset(), new Asset(), 0);
     let existing = statstable.get(symname, st);
     ultrain_assert(existing, 'getSupply failed, states is not existed.');
+    Return<u64>(st.supply.amount);
     return st.supply;
   }
 
   @action
-  public getBalance(owner: account_name, symname: symbol_name): Asset {
-    let accounts: DBManager<CurrencyAccount> = new DBManager<CurrencyAccount>(NAME(ACCOUNTTABLE), owner, symname);
+  public getBalance(owner: account_name, symnamestr: string): Asset {
+    let symname = (StringToSymbol(4, symnamestr) >> 8);
+    let accounts: DBManager<CurrencyAccount> = new DBManager<CurrencyAccount>(NAME(ACCOUNTTABLE), this.receiver, owner);
     let account = new CurrencyAccount(new Asset());
     let existing = accounts.get(symname, account);
     ultrain_assert(existing, 'getBalance failed, account is not existed.');
+    Return<u64>(account.balance.amount);
 
     return account.balance;
   }
