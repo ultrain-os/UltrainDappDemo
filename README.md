@@ -35,5 +35,5 @@ The new energy company produces a new energy device that can use the equipment t
  
 #### 5. Open http://localhost:3001/mining.html in browser.
 
-    It will send energy-saving data to smart contracts every 10 seconds to exchange CARB token. Refresh page http://localhost:3001/index.html and you will see data changes belong to Green facilities A and B.
+    It will send energy-saving data to smart contracts every 30 seconds to exchange CARB token. Refresh page http://localhost:3001/index.html and you will see data changes belong to Green facilities A and B.
     
