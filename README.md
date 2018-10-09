@@ -16,10 +16,15 @@ The new energy company produces a new energy device that can use the equipment t
 #### 3. Enter the test directory and type `mocha issueCarbonCoin.js --timeout 20000` to issue the CARB token.
 
     If you don't have mocha installed global, please install it first: npm install -g mocha
-
-#### 4. Enter the test directory and type `mocha registerEvent.js -g event.register` to subscribe the event.
     
-    note: the register_url here http://192.168.1.5:3002 should be accessible from the local docker. The specific ip depends on your network.
+#### 4. Modify the register_url in registerEvent.js to your real local address.
+
+![image](https://user-images.githubusercontent.com/1866848/46665089-6400cc00-cbf5-11e8-82da-3a3bce6051af.png)
+
+     note: the register_url here http://192.168.1.5:3002 should be accessible from the local docker. The specific ip depends on your network.
+
+#### 5. Enter the test directory and type `mocha registerEvent.js -g event.register` to subscribe the event.
+
 
 ### CarbonDApp
 
