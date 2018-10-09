@@ -1,5 +1,8 @@
 # UltrainDappDemo
 
+### Scene Introduction
+
+The new energy company produces a new energy device that can use the equipment to reduce carbon emissions while sending emission reduction data to new energy companies to exchange the corresponding carbon coins for additional returns. New energy companies develop smart contracts and issue the carbon coins, and the equipment users A and B transmit the emission reduction data to the smart contract every 30 seconds and automatically convert them into the corresponding carbon coins.
 
 ### CarbonContract
 
