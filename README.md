@@ -11,9 +11,11 @@ The new energy company produces a new energy device that can use the equipment t
    * download a <b>longclaw</b> tool from [developer portal](https://developer.ultrain.io) then install and start it.
    * download <b>u3.js</b> from [github](https://github.com/ultrain-os/u3.js) and enter docker-testnet directory and execute <b>start.sh</b>.
    
-#### 2. Enter the CarbonContract root directory and type `robin deploy`;
+#### 2. Enter the CarbonContract root directory and type `npm install` and then type `robin deploy`;
 
 #### 3. Enter the test directory and type `mocha issueCarbonCoin.js --timeout 20000` to issue the CARB token.
+
+    If you don't have mocha installed global, please install it first: npm install -g mocha
 
 #### 4. Enter the test directory and type `mocha registerEvent.js -g event.register` to subscribe the event.
     
