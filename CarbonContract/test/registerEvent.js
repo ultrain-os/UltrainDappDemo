@@ -11,24 +11,24 @@ const should = chai.should();
 const expect = chai.expect;
 const assert = chai.assert;
 
-describe('Test cases', function() {
+describe('event', function() {
 
-    it('event register', async () => {
+    it('register', async () => {
 
         let account = 'ben';
         const u3 = createU3(config);
-        await u3.registerEvent(account, 'http://rayguo.s1.natapp.cc');
+        await u3.registerEvent(account, 'http://192.168.1.5:3002');
 
         U3Utils.wait(1000);
 
     });
 
 
-    it('event unregister', async () => {
+    it('unregister', async () => {
 
         let account = 'ben';
-        const u3 = createU3(config);
-        await u3.unregisterEvent(account, 'http://rayguo.s1.natapp.cc');
+      const u3 = createU3(config);
+        await u3.unregisterEvent(account, 'http://192.168.1.5:3002');
 
         U3Utils.wait(1000);
 
