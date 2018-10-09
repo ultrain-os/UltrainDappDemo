@@ -11,6 +11,6 @@
 
 #### 3. Enter the test directory and type `mocha issueCarbonCoin.js --timeout 20000` to issue the CARB token.
 
-#### 4. Enter the test directory and type `mocha registerEvent.js -g register` to subscribe the event.
+#### 4. Enter the test directory and type `mocha registerEvent.js -g event.register` to subscribe the event.
     
     note: the register_url here http://192.168.1.5:3002 should be accessible from the local docker.
