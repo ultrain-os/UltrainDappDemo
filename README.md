@@ -36,7 +36,7 @@ The new energy company produces a new energy device that can use the equipment t
     
     You will see only the issuer account ben has CARB balance.
  
-#### 4. Entry the CarbonDApp root directory and type `node bin/msgBroker.js` to start a listener.
+#### 4. Entry the CarbonDApp root directory and type `node bin/listener.js` to start a listener.
 
     When the registered event is emited, an exchangeCarbonCoin function will be executed automatically.
  

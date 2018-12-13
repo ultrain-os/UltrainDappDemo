@@ -1,5 +1,5 @@
 {
-  "version": "ultraio:1.0",
+  "version": "ultraio:1.0:UIP06",
   "types": [
     {
       "new_type_name": "u64",
@@ -12,10 +12,6 @@
     {
       "new_type_name": "Asset",
       "type": "asset"
-    },
-    {
-      "new_type_name": "symbol_name",
-      "type": "uint64"
     }
   ],
   "structs": [
@@ -135,12 +131,22 @@
     {
       "fields": [
         {
+          "name": "sym_name",
+          "type": "string"
+        }
+      ],
+      "name": "getSupply",
+      "base": ""
+    },
+    {
+      "fields": [
+        {
           "name": "owner",
           "type": "account_name"
         },
         {
-          "name": "symname",
-          "type": "symbol_name"
+          "name": "sym_name",
+          "type": "string"
         }
       ],
       "name": "getBalance",
@@ -191,6 +197,10 @@
         {
           "name": "issuer",
           "type": "account_name"
+        },
+        {
+          "name": "timestamp",
+          "type": "u64"
         }
       ],
       "name": "CurrencyStats",
@@ -242,6 +252,11 @@
       "ricardian_contract": "",
       "name": "transfer",
       "type": "transfer"
+    },
+    {
+      "ricardian_contract": "",
+      "name": "getSupply",
+      "type": "getSupply"
     },
     {
       "ricardian_contract": "",
